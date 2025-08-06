@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
-export default generateToken=(code)=>{
+ const generateToken =(code)=>{
   const token=jwt.sign({code},process.env.JWT_SECRET);
   return token;
 }
+export default generateToken;
