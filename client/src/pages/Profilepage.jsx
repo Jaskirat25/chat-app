@@ -35,7 +35,7 @@ const Profilepage = () => {
         <form onSubmit={handlesubmit} className="flex flex-col gap-5 p-10 flex-1 items-center">
           <h3 className="text-lg self-start">Profile details</h3>
 
-          <label htmlFor="avatar" className="flex flex-col items-center gap-2 cursor-pointer">
+          <label htmlFor="avatar" className="flex  items-center gap-2 cursor-pointer">
             <input
               onChange={(e) => setSelectedImg(e.target.files[0])}
               type="file"
@@ -50,9 +50,9 @@ const Profilepage = () => {
                   : assets.avatar_icon
               }
               alt=""
-              className={`w-16 h-16 ${selectedImg && 'rounded-full'}`}
+              className={`w-14 h-14  ${selectedImg && 'rounded-full'}`}
             />
-            {/* <span className="text-sm">upload profile image</span> */}
+            <span className="text-sm">upload profile image</span>
           </label>
 
           <input
@@ -82,7 +82,7 @@ const Profilepage = () => {
 
         <img
           className={`max-w-50 aspect-square rounded-full mx-10 max-sm:mt-10  ${selectedImg && 'rounded-full'}`} 
-          src={assets.logo_icon}
+          src={authUser?.profilePic  || assets.logo_icon}
           alt=""
         />
       </div>
