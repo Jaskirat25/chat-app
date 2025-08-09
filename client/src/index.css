@@ -6,3 +6,12 @@
 ::-webkit-scrollbar{
     display:none;
 }
+body {
+  background-image: url('./src/assets/bgImage.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  overflow-y: hidden;
+}
+

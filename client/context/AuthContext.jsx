@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import io from "socket.io-client"
+import io from "socket.io-client";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
 
@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
+      axios.defaults.headers.common["token"] = token;
+
       const { data } = await axios.get("/api/auth/check");
       if (data.success) {
         setAuthUser(data.user);
@@ -27,14 +29,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (state, credentials) => {
     try {
+      axios.defaults.headers.common["token"] = token;
+
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
       if (data.success) {
         setAuthUser(data.userData);
         connectSocket(data.userData);
-        console.log("yaha tak sahi hai");
         axios.defaults.headers.common["token"] = data.token;
         setToken(data.token);
-        console.log(data.token);
         localStorage.setItem("token", data.token);
         toast.success(data.message);
       } else {
@@ -57,6 +59,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (body) => {
     try {
+      axios.defaults.headers.common["token"] = token;
       const { data } = await axios.put("/api/auth/update-profile", body);
       if (data.success) {
         setAuthUser(data.user);
@@ -81,13 +84,8 @@ export const AuthProvider = ({ children }) => {
     newSocket.on("getOnlineUsers", (userIds) => {
       setOnlineUsers(userIds);
     });
+    
   };
-
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["token"] = token;
-    }
-  });
 
   const value = {
     axios,
@@ -97,6 +95,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateProfile,
+    checkAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
